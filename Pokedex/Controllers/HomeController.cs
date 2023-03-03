@@ -16,16 +16,21 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        string arquivo = @"Data\pokemons.json";
-        using(StreamReader leitor = new StreamReader(arquivo))
+        ViewData["Tipos"]= JsonSerializer.Deserialize<List<Tipo>>(
+            LerArquivo(@"Data\tipos.json")
+        );
+        var dados = LerArquivo(@"Data\pokemons.json");
+        var pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
+        return View(pokemons);
+    }
+
+    private string LerArquivo(string nomeArquivo)
+    {
+        using (StreamReader leitor = new StreamReader(nomeArquivo))
         {
             string dados = leitor.ReadToEnd();
-            var pokemons = JsonSerializer.Deserialize<
-            List<Pokemon>>(dados);
-            return View(pokemons);
+            return dados;
         }
-        
-        
     }
 
     public IActionResult Privacy()
