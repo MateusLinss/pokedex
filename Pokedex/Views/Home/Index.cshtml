@@ -4,6 +4,12 @@
     ViewData["Title"] = "Home Page";
     //Layout= null;
     List<Tipo> tipos = ViewBag.Tipos;
+    string Cor(string nomeTipo)
+    {
+        Tipo tipo = tipos.Where(t => t.Nome.Equals(nomeTipo)).FirstOrDefault();
+        return tipo.Cor;
+    }
+
 }
 
 
@@ -16,7 +22,7 @@
                     Todos</button>
                 @foreach (var tipo in tipos)
                 {
-                    <button id="btn-@tipo.nome.ToLower()" class="btn btn-sm my-2 text-white btn-filter"
+                    <button id="btn-@tipo.Nome.ToLower()" class="btn btn-sm my-2 text-white btn-filter"
                     style="background-color:@tipo.Cor">@tipo.Nome</button>
                 }
             </div>
@@ -45,7 +51,7 @@
                                 <div class="btn-group">
                                     @foreach (var tipo in pokemon.Tipo)
                                     {
-                                        <a href="#" class="btn my-2 text-white bg-dark" >@tipo</a>
+                                        <a href="#" class="btn my-2 text-white " style="Background-color:@Cor(tipo)">@tipo</a>
 
                                     }
                                 </div>
