@@ -6,28 +6,40 @@ public class PokeService : IPokeService
     public PokeService(IHttpContextAcessor session)
     {
         _session = session;
+        PopularSessao();
     }
-    Pokemon GetPokemon(int Numero)
+    public Pokemon GetPokemon(int Numero)
     {
-
+        PopularSessao();
+        var pokemons = JsonSerializer.Deserialize<List<Pokemon>>(_session.HttpContext.Session.GetString("Pokemons"));
+        return pokemons.Where(pokemons => pokemons.Numero == Numero).FirstOrDefault();
     }
 
-    List<Pokemon> GetPokemons()
-    {
 
+
+    public List<Pokemon> GetPokemons()
+    {
+        PopularSessao();
+        var pokemons = JsonSerializer.Deserialize<List<Pokemon>>(_session.HttpContext.Session.GetString("Pokemons"));
+        return pokemons;
+    }
+    public List<Tipo> GetPTipos()
+    {
+        PopularSessao();
+        var tipos = JsonSerializer.Deserialize<List<Tipo>>(_session.HttpContext.Session.GetString("Tipos"));
+        return tipos;
     }
 
     private void PopularSessao()
     {
-        //ViewData["Tipos"] = JsonSerializer.Deserialize<List<Tipo>>(
-        //    LerArquivo(@"Data\tipos.json")
-        //);
-        //var dados = LerArquivo(@"Data\pokemons.json");
-        // var pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
-        var dados = LerArquivo(@"Data\pokemons.json");
-        _session.HttpContext.Session.SetString("Pokemons", dados);
-        dados = LerArquivo(@"Data\tipos.json");
-        _session.HttpContext.Session.SetString("Tipos", dados);
+        if (string.IsNullOrEmpty(
+            _session.HttpContext.Session.GetString("Pokemons")))
+        {
+            var dados = LerArquivo(@"Data\pokemons.json");
+            _session.HttpContext.Session.SetString("Pokemons", dados);
+            dados = LerArquivo(@"Data\tipos.json");
+            _session.HttpContext.Session.SetString("Tipos", dados);
+        }
     }
 
     private string LerArquivo(string nomeArquivo)
