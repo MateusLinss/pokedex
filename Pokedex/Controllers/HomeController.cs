@@ -2,21 +2,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Pokedex.Models;
+using Pokedex.Services;
 
 namespace Pokedex.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IPokeService _service;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IPokeService service)
     {
         _logger = logger;
+        _service = service;
     }
 
     public IActionResult Index()
     {
-        return View();
+        var pokemons = _service.GetPokemons();
+        ViewData["Tipos"] = _service.GetTipos();  
+        return View(pokemons);
     }
 
 

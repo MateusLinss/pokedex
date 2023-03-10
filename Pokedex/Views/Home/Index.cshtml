@@ -20,7 +20,7 @@
             <div class="group">
                 <button id="btn-all" class="btn btn-md my-2 text-white bg-secondary btn-filter">Ver
                     Todos</button>
-                @foreach (var tipo in tipos)
+                @foreach(var tipo in tipos)
                 {
                     <button id="btn-@tipo.Nome.ToLower()" class="btn btn-sm my-2 text-white btn-filter"
                     style="background-color:@tipo.Cor">@tipo.Nome</button>
